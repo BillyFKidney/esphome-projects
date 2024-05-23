@@ -1,17 +1,21 @@
 substitutions:
-  name: "m5stick"
-  devicename: m5stick
-  upper_devicename: M5StickC
-  friendly_name: "M5Stick C Plus"
+  device_name: "m5stick-c-plus_va"
+  device_friendly_name: "M5StickC Plus Voice Assistant"
+  device_description: "M5StickC Plus (v1.1) connected to a Speaker HAT. Voice assistant is push to talk"
+  device_upper_name: "M5StickC_Plus"
   
 esphome:
-  name: ${name}
-  friendly_name: ${friendly_name}
+  name: ${device_name}
+  friendly_name: ${device_friendly_name}
   platform: ESP32
   board: m5stick-c
   platformio_options:
     upload_speed: 115200
-
+  project:
+    name: m5stack.stick_c_plus-spk_hat
+    version: "1.0.0"
+  min_version: 2023.5.0
+  
 # Enable logging
 logger:
 
@@ -54,7 +58,7 @@ binary_sensor:
     pin:
       number: GPIO37
       inverted: true
-    name: ${upper_devicename} Button A
+    name: ${device_upper_name} Button A
     on_press:
       then:
         - light.turn_on: led1
@@ -66,7 +70,7 @@ binary_sensor:
     pin:
       number: GPIO39
       inverted: true
-    name: ${upper_devicename} Button B
+    name: ${device_upper_name} Button B
     on_press:
       then:
         - light.turn_on: led1
@@ -77,7 +81,7 @@ binary_sensor:
 light:
   - platform: monochromatic
     output:  builtin_led
-    name: ${upper_devicename} Led
+    name: ${device_upper_name} LED
     id: led1
 
 output:
@@ -142,12 +146,12 @@ i2s_audio:
        number: GPIO0
        allow_other_uses: true
        ignore_strapping_warning: true
-  - id: spk_adc #test for speaker
-    i2s_lrclk_pin:
-       number: GPIO0
-       allow_other_uses: true
-       ignore_strapping_warning: true
-    i2s_bclk_pin: GPIO26
+#  - id: spk_adc #test for speaker
+#    i2s_lrclk_pin:
+#       number: GPIO0
+#       allow_other_uses: true
+#       ignore_strapping_warning: true
+#    i2s_bclk_pin: GPIO26
 
 microphone:
   - platform: i2s_audio
@@ -156,8 +160,8 @@ microphone:
     adc_type: external
     channel: left
     i2s_audio_id: mic_adc
-#    bits_per_sample: 16bit #better ??
-#    sample_rate: 44100 #better ??
+    bits_per_sample: 16bit #better ??
+    sample_rate: 44100 #better ??
     pdm: true
 
 #media_player:
@@ -165,10 +169,19 @@ microphone:
 #    id: media_out
 #    name: ${friendly_name}
 #    dac_type: external
-#    i2s_lrclk_pin: GPIO21
+#    # SPK Hat2 Data Pin = 25
 #    i2s_dout_pin: GPIO25
-#    i2s_bclk_pin: GPIO22
 #    mode: mono
+
+media_player:
+  - platform: i2s_audio
+    id: media_out
+    name: ${friendly_name}
+    dac_type: internal
+    # SPK Hat2 Data Pin = 26
+    i2s_dout_pin: GPIO26
+    mode: mono
+
 
 voice_assistant:
   microphone: stickc_microphone
