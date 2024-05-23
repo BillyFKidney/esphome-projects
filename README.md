@@ -1,2 +1,2 @@
 # esphome-projects
-This is a collection of home projects done with ESPhome
+Small collection of ESP Home projects that I've built.
