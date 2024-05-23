@@ -22,7 +22,7 @@ esp32:
     type: arduino
 
 dashboard_import:
-  package_import_url: github://___UPDATE_ME_____
+  package_import_url: github://BillyFKidney/esphome-projects/VoiceAssistants/AtomS3Lite_Push2Talk.yaml@main
 
 # Enable logging
 logger:
@@ -37,7 +37,7 @@ wifi:
   password: !secret wifi_password
   on_connect:
     - delay: 10s  # Gives time for improv results to be transmitted
-    - ble.disable:
+    - ble.disable: # Disable BLE to reduce memory usage
   on_disconnect:
     - ble.enable: # Enables BLE so that device can be configured
 
@@ -124,7 +124,7 @@ voice_assistant:
     - script.execute: reset_led
 
 light:
-  #G35=RGB WS2812C-2020
+# Pin G35 === RGB WS2812C-2020
   - platform: esp32_rmt_led_strip
     rgb_order: GRB
     pin: 35
