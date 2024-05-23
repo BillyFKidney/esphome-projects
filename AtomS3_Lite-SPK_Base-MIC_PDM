@@ -1,4 +1,4 @@
-#https://docs.m5stack.com/en/core/AtomS3%20Lite
+# https://docs.m5stack.com/en/core/AtomS3%20Lite
 substitutions:
   device_name: "m5stack-atoms3-lite-va"
   device_friendly_name: "AtomS3 Lite Voice Assist"
